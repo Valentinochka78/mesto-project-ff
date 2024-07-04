@@ -1,0 +1,27 @@
+module.exports = {
+    const path = require('path'),
+
+    entry: { main: './src/index.js' },
+    output: {
+        path: './dist/',
+        filename: 'main.js',
+                publicPath: ''
+    },
+    mode: 'development',
+    devServer: {
+        static: path.resolve(__dirname, './dist'),
+        compress: true,
+        port: 8080,
+    
+        open: true
+      },
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            use: 'babel-loader',
+            exclude: '/node_modules/'
+          }
+          ]
+      },
+}
