@@ -1,41 +1,25 @@
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  document.addEventListener('keydown', handleEscClose);
+  popup.addEventListener('keydown', handleEscClose);
+  popup.addEventListener('click', closePopupByOverlay);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', handleEscClose);
+  popup.removeEventListener('keydown', handleEscClose);
+  popup.removeEventListener('click', closePopupByOverlay);
 }
 
-editProfileOpenButton.addEventListener('click', function() {
-  openPopup(editProfilePopup);
-});
-
-newCardOpenButton.addEventListener('click', function() {
-  openPopup(newCardPopup);
-});
-
-closeButtons.forEach(function(button) {
-  button.addEventListener('click', function() {
-    const popup = button.closest('.popup');
-    closePopup(popup);
-  });
-});
-
 function handleEscClose(event) {
-  if (event.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
+  if (event.key === 'Escape' && event.target.classList.contains('popup_opened')) {
+    closePopup(event.target);
   }
 }
 
-popups.forEach(function(popup) {
-  popup.addEventListener('click', function(event) {
-    if (event.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    }
-  });
-});
+function closePopupByOverlay(event) {
+  if (event.target.classList.contains('popup_opened') || event.target.closest('.popup_opened')) {
+    closePopup(event.target);
+  }
+}
 
-export { openPopup, closePopup };
+export { openPopup, closePopup, handleEscClose, closePopupByOverlay };
