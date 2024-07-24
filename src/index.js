@@ -4,98 +4,100 @@ import { createCard, removeCard } from './components/card';
 import { openPopup, closePopup, handleEscClose, closePopupByOverlay } from './components/modal';
 
 const content = document.querySelector('.content');
-const cardTemplate = document.querySelector('#card-template').content;
 const placesList = document.querySelector('.places__list');
-const cardItems = document.querySelectorAll('.places__item');
-const popups = document.querySelectorAll('.popup');
-const editProfilePopup = document.querySelector('.popup_type_edit');
-const newCardPopup = document.querySelector('.popup_type_new-card');
-const imagePopup = document.querySelector('.popup_type_image');
-const editProfileOpenButton = document.querySelector('.edit-profile-button');
-const newCardOpenButton = document.querySelector('.new-card-button');
-const closeButtons = document.querySelectorAll('.popup__close');
-const editProfileForm = document.forms['edit-profile'];
-const newPlaceForm = document.forms['new-place'];
-const nameInput = editProfileForm.querySelector('.popupinput_type_name');
-const descriptionInput = editProfileForm.querySelector('.popupinput_type_description');
-const placeNameInput = newPlaceForm.querySelector('.popupinput_type_card-name');
-const linkInput = newPlaceForm.querySelector('.popupinput_type_url');
-const addButton = document.querySelector('.add-button');
-const closePopupButton = newCardPopup.querySelector('.popup__close');
+const formElement = document.querySelector('.popup__form[name="new-place"]');
 
 function renderInitialCards() {
-  initialCards.forEach((element) => {
-    placesList.append(createCard(element, removeCard));
+ initialCards.forEach((element) => {
+ placesList.append(createCard(element, removeCard));
   });
 }
 renderInitialCards();
 
-function handleEditProfileOpenButtonClick() {
-  openPopup(editProfilePopup);
-}
-
-function openEditProfileModal() {
-  openPopup(editProfilePopup);
-}
-
-function handleEditProfileFormSubmit(event) {
-  event.preventDefault();
-  console.log('Форма отправлена');
-}
-
-editProfileOpenButton.addEventListener('click', handleEditProfileOpenButtonClick);
-
-editProfileForm.addEventListener('submit', handleEditProfileFormSubmit);
-
-function openImagePopup() {
-  openPopup(imagePopup);
-}
-
-newCardOpenButton.addEventListener('click', openImagePopup);
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !event.defaultPrevented) {
-    closePopup(event.target);
-  }
+document.querySelector('.profile__add-button').addEventListener('click', function() {
+document.querySelector('.popup_type_new-card').style.display = 'block';
 });
 
-document.addEventListener('click', (event) => {
-  if (!event.target.closest('.popup')) {
-    closePopupByOverlay(event.target);
-  }
+document.querySelector('.popup__close').addEventListener('click', function() {
+document.querySelector('.popup_type_new-card').style.display = 'none';
 });
 
-closeButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    closePopup(button);
-  });
-});
+function handleFormSubmit(evt) {
+  evt.preventDefault();
+  const placeNameInput = document.querySelector('.popupinput_type_card-name');
+  const linkInput = document.querySelector('.popupinput_type_url');
+  const placeName = placeNameInput.value;
+  const link = linkInput.value;
+  const newCard = document.createElement('li');
+  newCard.classList.add('places__item', 'card');
 
-function findAndAttachEventHandlers() {
-  document.querySelectorAll('.content').forEach((element) => {
-    element.addEventListener('click', (event) => {
-      console.log('Клик по элементу .content:', element);
-    });
-  });
+  const image = document.createElement('image');
+  image.classList.add('card__image');
+  image.src = link;
+  image.alt = placeName;
+  newCard.appendChild(image);
 
-  const cardTemplateElement = document.getElementById('card-template');
-  if (cardTemplateElement) {
-    cardTemplateElement.addEventListener('click', (event) => {
-      console.log('Клик по элементу #card-template:', event.target);
-    });
-  }
+  const deleteButton = document.createElement('button');
+  deleteButton.type = 'button';
+  deleteButton.classList.add('card__delete-button');
+  newCard.appendChild(deleteButton);
 
-  document.querySelectorAll('.places__list').forEach((element) => {
-    element.addEventListener('click', (event) => {
-      console.log('Клик по элементу .places__list:', element);
-    });
-  });
+  const description = document.createElement('div');
+  description.classList.add('card__description');
+  newCard.appendChild(description);
 
-  document.querySelectorAll('.places__item').forEach((element) => {
-    element.addEventListener('click', (event) => {
-      console.log('Клик по элементу .places__item:', element);
-    });
-  });
+  const title = document.createElement('h2');
+  title.classList.add('card__title');
+  title.textContent = placeName;
+  description.appendChild(title);
+
+  const likeButton = document.createElement('button');
+  likeButton.type = 'button';
+  likeButton.classList.add('card__like-button');
+  description.appendChild(likeButton);
+  placesList.insertBefore(newCard, placesList.firstChild);
+
+  const closeButton = document.querySelector('.popup__close');
+  closeButton.click();
+
+  formElement.reset();
 }
 
-findAndAttachEventHandlers();
+formElement.addEventListener('submit', handleFormSubmit);
+
+function handleNewPlaceFormSubmit() {
+  const form = document.forms['new-place'];
+  if (!form.checkValidity()) return;
+  const placeName = form.placeName.value;
+  const link = form.link.value;
+  const cardElement = document.createElement('li');
+  cardElement.classList.add('places__item', 'card');
+  const imgElement = document.createElement('img');
+  imgElement.classList.add('card__image');
+  imgElement.src = link;
+  cardElement.appendChild(imgElement);
+  const deleteButton = document.createElement('button');
+  deleteButton.type = 'button';
+  deleteButton.classList.add('card__delete-button');
+  cardElement.appendChild(deleteButton);
+  const descriptionElement = document.createElement('div');
+  descriptionElement.classList.add('card__description');
+  cardElement.appendChild(descriptionElement);
+
+  const titleElement = document.createElement('h2');
+  titleElement.classList.add('card__title');
+  titleElement.textContent = placeName;
+  descriptionElement.appendChild(titleElement);
+
+  const likeButton = document.createElement('button');
+  likeButton.type = 'button';
+  likeButton.classList.add('card__like-button');
+  descriptionElement.appendChild(likeButton);
+  const cardsContainer = document.querySelector('.places__list');
+  cardsContainer.insertBefore(cardElement, cardsContainer.firstChild);
+  form.reset();
+  const popup = document.querySelector('.popup_type_new-card');
+  popup.classList.remove('is-visible');
+}
+
+document.forms['new-place'].addEventListener('submit', handleNewPlaceFormSubmit);
