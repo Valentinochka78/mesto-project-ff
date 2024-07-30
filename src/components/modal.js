@@ -1,25 +1,28 @@
 function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  popup.addEventListener('keydown', handleEscClose);
-  popup.addEventListener('click', closePopupByOverlay);
+    popup.classList.add('popup_is-opened');
+    document.addEventListener('keydown', handleEscClose);
+    popup.addEventListener('click', closePopupByOverlay);
 }
 
 function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  popup.removeEventListener('keydown', handleEscClose);
-  popup.removeEventListener('click', closePopupByOverlay);
+    popup.classList.remove('popup_is-opened');
+    document.removeEventListener('keydown', handleEscClose);
+    popup.removeEventListener('click', closePopupByOverlay);
 }
 
 function handleEscClose(event) {
-  if (event.key === 'Escape' && event.target.classList.contains('popup_opened')) {
-    closePopup(event.target);
-  }
+    if (event.key === 'Escape') {
+        const openedPopup = document.querySelector('.popup_is-opened');
+        if (openedPopup) {
+            closePopup(openedPopup);
+        }
+    }
 }
 
 function closePopupByOverlay(event) {
-  if (event.target.classList.contains('popup_opened') || event.target.closest('.popup_opened')) {
-    closePopup(event.target);
-  }
+    if (event.target.classList.contains('popup') && !event.target.classList.contains('popup__content_content_image')) {
+        closePopup(event.target);
+    }
 }
-
-export { openPopup, closePopup, handleEscClose, closePopupByOverlay };
+ 
+export { openPopup, closePopup, closePopupByOverlay };
