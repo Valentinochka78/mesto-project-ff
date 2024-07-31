@@ -1,6 +1,6 @@
 import './pages/index.css';
 import { initialCards } from './components/cards';
-import { createCard, removeCard } from './components/card';
+import { createCard, removeCard, likeCard, openCard } from './components/card';
 import { openPopup, closePopup, closePopupByOverlay } from './components/modal';
 
 const content = document.querySelector('.content');
@@ -11,17 +11,22 @@ const imagePopup = document.querySelector('.popup_type_image');
 
 function renderInitialCards() {
   initialCards.forEach((element) => {
-    placesList.append(createCard(element, removeCard));
+    placesList.append(createCard(element, removeCard, likeCard, openCard));
   });
 }
 renderInitialCards();
 
- document.querySelector('.profile__edit-button').addEventListener('click', () => openPopup(editPopup));
- document.querySelector('.profile__add-button').addEventListener('click', () => openPopup(newCardPopup));
- document.querySelectorAll('.popup__close').forEach(button => {
- button.addEventListener('click', (event) => {
- closePopup(event.target.closest('.popup'));
-   });
+document.querySelector('.profile__edit-button').addEventListener('click', () => {
+nameInput.value = document.querySelector('.profile__title').textContent;
+jobInput.value = document.querySelector('.profile__description').textContent;
+  openPopup(editPopup);
+});
+
+document.querySelector('.profile__add-button').addEventListener('click', () => openPopup(newCardPopup)); 
+document.querySelectorAll('.popup__close').forEach(button => { 
+button.addEventListener('click', (event) => { 
+closePopup(event.target.closest('.popup')); 
+});
 });
 
 document.querySelectorAll('.popup').forEach(popup => {
@@ -32,7 +37,7 @@ const formElement = document.querySelector('.popup__form[name="edit-profile"]');
 const nameInput = formElement.querySelector('.popup__input_type_name');
 const jobInput = formElement.querySelector('.popup__input_type_description');
 
-function handleFormSubmit(evt) {
+function popupFormSubmit(evt) {
   evt.preventDefault();
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
@@ -44,7 +49,7 @@ function handleFormSubmit(evt) {
   closePopup(formElement.closest('.popup'));
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+formElement.addEventListener('submit', popupFormSubmit);
 
 const newCardForm = newCardPopup.querySelector('form[name="new-place"]');
 

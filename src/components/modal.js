@@ -20,7 +20,7 @@ function handleEscClose(event) {
 }
 
 function closePopupByOverlay(event) {
-    if (event.target.classList.contains('popup') && !event.target.classList.contains('popup__content_content_image')) {
+    if (event.target.classList.contains('popup')) {
         closePopup(event.target);
     }
 }
