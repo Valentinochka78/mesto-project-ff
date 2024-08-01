@@ -1,6 +1,6 @@
 import './pages/index.css';
 import { initialCards } from './components/cards';
-import { createCard, removeCard, likeCard, openCard } from './components/card';
+import { createCard, removeCard, likeCard } from './components/card';
 import { openPopup, closePopup, closePopupByOverlay } from './components/modal';
 
 const content = document.querySelector('.content');
@@ -8,6 +8,11 @@ const placesList = document.querySelector('.places__list');
 const editPopup = document.querySelector('.popup_type_edit');
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const imagePopup = document.querySelector('.popup_type_image');
+const openCard = cardData => {
+imagePopup.querySelector('.popup__image').src = cardData.link;
+imagePopup.querySelector('.popup__image').alt = imagePopup.querySelector('.popup__caption').textContent = cardData.name;
+openPopup(imagePopup)
+}
 
 function renderInitialCards() {
   initialCards.forEach((element) => {
