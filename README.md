@@ -1,3 +1,3 @@
- https://valentinagrigoryan.github.io/mesto-proekt-ff
+ https://valentinagrigoryan.github.io/mesto-project-ff
  
  
