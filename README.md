@@ -1,2 +1,2 @@
- https://valentinagrigoryan.github.io/mesto-project-ff
+https://github.com/Valentinochka78/mesto-project-ff.git
  
