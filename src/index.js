@@ -2,6 +2,7 @@ import './pages/index.css';
 import { initialCards } from './components/cards';
 import { createCard, removeCard, likeCard } from './components/card';
 import { openPopup, closePopup, closePopupByOverlay } from './components/modal';
+import { enableValidation, clearValidation } from './components/validation';
 
 const content = document.querySelector('.content');
 const placesList = document.querySelector('.places__list');
@@ -66,4 +67,13 @@ newCardForm.addEventListener('submit', (event) => {
   placesList.prepend(newCard);
   closePopup(newCardPopup);
   newCardForm.reset();
+});
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
 });
