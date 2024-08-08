@@ -1,14 +1,5 @@
 const cardTemplate = document.querySelector('#card-template').content; 
 
-const likeCard = evt => {
-    evt.target.classList.toggle('card__like-button_is-active');
-}
-
-const removeCard = event => {  
-    const card = event.target.closest('.card');  
-    card.remove();  
-} 
-
 function createCard(cardData, removeCard, likeCard, openCard) {  
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);  
     cardElement.querySelector('.card__title').textContent = cardData.name;  
@@ -23,6 +14,15 @@ function createCard(cardData, removeCard, likeCard, openCard) {
 
     return cardElement;  
 }
+
+const likeCard = evt => {
+    evt.target.classList.toggle('card__like-button_is-active');
+}
+
+const removeCard = event => {  
+    const card = event.target.closest('.card');  
+    card.remove();  
+} 
 
 export { createCard, removeCard, likeCard };
 
